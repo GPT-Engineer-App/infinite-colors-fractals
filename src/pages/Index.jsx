@@ -7,18 +7,16 @@ const generateColor = (depth) => {
   return color;
 };
 
-const FractalBox = ({ depth, size = "100%" }) => {
-  if (depth === 0) {
+const FractalBox = ({ size = "100%" }) => {
+  const newSize = size.includes("%") ? `${parseInt(size) * 0.5}%` : size * 0.5;
+  if (newSize.includes("%") ? parseInt(newSize) <= 1 : newSize <= 1) {
     return null;
   }
-  const color = generateColor(depth);
-
-  // Calculate size for nested boxes
-  const newSize = size.includes("%") ? `${parseInt(size) * 0.5}%` : size * 0.5;
+  const color = generateColor(parseInt(size));
 
   return (
     <Box w={size} h={size} bg={color} display="flex" alignItems="center" justifyContent="center">
-      <FractalBox depth={depth - 1} size={newSize} />
+      <FractalBox size={newSize} />
     </Box>
   );
 };
@@ -34,7 +32,7 @@ const Index = () => {
   return (
     <VStack spacing={4} p={8} align="stretch">
       <Box borderWidth="1px" borderRadius="lg" overflow="hidden" p={4} position="relative" h="400px">
-        <FractalBox depth={fractalDepth} />
+        <FractalBox size={"100%"} />
       </Box>
 
       <HStack justifyContent="center">
