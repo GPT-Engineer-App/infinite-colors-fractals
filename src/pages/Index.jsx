@@ -7,14 +7,18 @@ const generateColor = (depth) => {
   return color;
 };
 
-const FractalBox = ({ depth }) => {
+const FractalBox = ({ depth, size = "100%" }) => {
   if (depth === 0) {
     return null;
   }
   const color = generateColor(depth);
+
+  // Calculate size for nested boxes
+  const newSize = size.includes("%") ? `${parseInt(size) * 0.5}%` : size * 0.5;
+
   return (
-    <Box w="100%" h="100%" bg={color} display="flex" alignItems="center" justifyContent="center">
-      <FractalBox depth={depth - 1} />
+    <Box w={size} h={size} bg={color} display="flex" alignItems="center" justifyContent="center">
+      <FractalBox depth={depth - 1} size={newSize} />
     </Box>
   );
 };
